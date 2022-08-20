@@ -103,7 +103,7 @@ example on the lack of types in ZFC:
 	 
 Typed systems forbid asking questions like this. [Note: Coq is
 powerful enough to define Von Neumann sets and define an encoding of
-the cosine function and the number $e$ as sets. Type theory does
+the cosine function and the number $$e$$ as sets. Type theory does
 not strictly /forbid/ asking this question; it just requires repeating
 the construction of real analysis and (a few layers of) the Von
 Neumann universe on top of Coq types. Ref: [SetTypeTypeSet]]
@@ -132,8 +132,7 @@ Unsanswered questions (by me):
       can encode ZFC with infinitely many inacessible ordinals.
 
 ### Coq example
-The example below shows a proof of $$(\exists (a\in A): \neg B(a))
-\Rightarrow \neg (\forall (a\in A): B(a))$$ in the Coq system.
+The example below shows a proof of $$(\exists (a\in A): \neg B(a)) \Rightarrow \neg (\forall (a\in A): B(a))$$ in the Coq system.
 
 ```coq
 Lemma exists_impl_forall (A: Type) (B: A -> Prop) :
@@ -163,17 +162,17 @@ Qed.
 ```
 
 In Coq (and in Martin-Löf Type Theory in general), every logical
-statement $P$ can be converted to a type $T(P)$ though the
+statement $$P$$ can be converted to a type $$T(P)$$ though the
 [Curry-Howard
 correspondence](https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence). A
-proof of the logical statement $P$ is a lambda calculus term whose
-type is $T(P)$.  To prove $P$, one can either explicitly type the
+proof of the logical statement $$P$$ is a lambda calculus term whose
+type is $$T(P)$$.  To prove $$P$$, one can either explicitly type the
 proof term and have the type checker of the system accept is type as
-$T(P)$, or construct it interactively though a higher level proof
+$$T(P)$$, or construct it interactively though a higher level proof
 language.
 
-The example above shows 4 ways to prove the implication with $\exists$
-and $\forall$. The first constructs the full proof term `fun anBa allB
+The example above shows 4 ways to prove the implication with $$\exists$$
+and $$\forall$$. The first constructs the full proof term `fun anBa allB
 => let (a, nBa) := anBa in nBa (allB a)`. The second instructs Coq to
 automatically construct the proof term with `firstorder` that only
 works for some proofs. The third example shows the commands of the
@@ -216,22 +215,22 @@ Theorem Friendship
 I formalized the proof in [[BookProof]](#FriendshipBook) which is
 claimed to be identical to the first published proof by Erdös et. al.
 [[ErdosProof]](#ErdosProof). The proof goes as follows:
-* Assume that there is *no* person that knows all others [[link.]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#no_hub':56)
+* Assume that there is *no* person that knows all others. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#no_hub':56)
 * Under the assumption, the friendship graph is
-  *k*-regular. [[link.]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#regular)
-* Under the assumption, $n=k^2-k+1$ [[link.]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#nk)
-* Under the assumption, $A^2 = \mathbb{1}\mathbb{1}^\intercal + (k-1)I$ and $\tr A = 0$ where $A$ is the $n\times n$ adjacency matrix of the graph. [[link.]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#adj2_eq)
-*  $A^2 = \mathbb{1}\mathbb{1}^\intercal + (k-1)I$,  $\tr A = 0$, $k\in \mathbb{N}$, $n=k^2-k+1$ implies $(k-1)| k^2$ by linear algebra. [[link.]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.divisibility.html#tr_adj_rel_nat)
-* $k\in \mathbb{N}, (k-1)| k^2$ implies $k=2$. [[link.]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.divisibility.html#k_is_2)
-* $k=2$, $n=k^2-k+1$ and a $k$-regular graph contradict the assumption that no person knows all others. [[link.]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#fls)
+  *k*-regular. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#regular)
+* Under the assumption, $$n=k^2-k+1$$. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#nk)
+* Under the assumption, $$A^2 = \mathbb{1}\mathbb{1}^\intercal + (k-1)I$$ and $$\operatorname{tr} A = 0$$ where $$A$$ is the $$n\times n$$ adjacency matrix of the graph. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#adj2_eq)
+*  $$A^2 = \mathbb{1}\mathbb{1}^\intercal + (k-1)I$$,  $$\operatorname{tr} A = 0$$, $$k\in \mathbb{N}$$, $$n=k^2-k+1$$ implies $$(k-1)| k^2$$ by linear algebra. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.divisibility.html#tr_adj_rel_nat)
+* $$k\in \mathbb{N}, (k-1)| k^2$$ implies $$k=2$$. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.divisibility.html#k_is_2)
+* $$k=2$$, $$n=k^2-k+1$$ and a $$k$$-regular graph contradict the assumption that no person knows all others. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#fls)
 
 A good example of a non-automated proof is [`Lemma
 k_not_2`](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#k_not_2),
 which shows the level of detail required for a basic combinatorial
 proof. The lemma states that whenever the friendship graph contains no
-person is a friend of all others, and and is $k$-regular with
-$n=k^2-k+1$, then $k\neq 2$. A human written proof would be to assume
-$k=2$ for contradiction, compute $n=2^2-2+1=3$, take any person and
+person is a friend of all others, and and is $$k$$-regular with
+$$n=k^2-k+1$$, then $$k\neq 2$$. A human written proof would be to assume
+$$k=2$$ for contradiction, compute $$n=2^2-2+1=3$$, take any person and
 observe that the person together with its two friends form the full
 graph, so the person is a friend of all others which is a
 contradiction. The linked Coq proof starts with a comment that
@@ -306,13 +305,13 @@ understand this].
 [[Czaika18]](#czajka18) is a general purpose automation tool. It works
 by first scanning though all premises (that can be named entities like
 definitions or lemmas) in the environment, and filters out the top
-$N=1024$ that it deems most likely to be used in the proof of the
+$$N=1024$$ that it deems most likely to be used in the proof of the
 current goal. The filtering can be done with a Naive Bayes relevance
 filter. I don't know what the features for Naive Bayes nor what
 distance is used for k-Nearest Neighbours [Note: it's in section 4 of
 [[Czaika18]](#czajka18), but I have not read that far].
 
-The $N$ chosen premises are converted to first order  logic in the TPTP
+The $$N$$ chosen premises are converted to first order  logic in the TPTP
 format [[THFo]](#THFo). When I first read [[Czaika18]](#czajka18) I
 got the impression that the output of this step is quantified boolean
 formulas (making all questions about them decidable), while Coq is
@@ -326,9 +325,9 @@ The TPTP output is then sent to external provers like
 
 I tried to use CoqHammer for the Friendship Theorem project, but found
 that for some reason, it could not solve even simple goals. Below is
-an example. I am to prove that $\det(-I)$ is an invertible ring
+an example. I am to prove that $$\det(-I)$$ is an invertible ring
 element in the ring of complex algebraic numbers. I already know that
-$-I$ is an invertible matrix, and there is a lemma `unitmxE` that says
+$$-I$$ is an invertible matrix, and there is a lemma `unitmxE` that says
 that invertible matrices have invertible determinants. The prediction
 step finds the lemma `unitmxE` among the top 50 candidates. Then
 `CoqHammer` uses all available cores and all available memory until it
@@ -362,10 +361,9 @@ situation where nothing can be proven.
 #### Coq Tactician
 [[CoqTactician]](#coqtactician) aspieres to be a useable proof
 automation framework that learns from earlier proofs.  It builds a
-database of triples $$(\Gamma_1 |- \sigma_1, \texttt{<tactic>}
-\Gamma_2 |- \sigma_2)$$ where $$\Gamma_1, \Gamma_2$$ are proof
-contexts before and after application of $$\texttt{<tactic>}$$, and
-$\sigma_1, \sigma_2$ are goals before and after $$\texttt{<tactic>}$$.
+database of triples $$(\Gamma_1 \vdash \sigma_1, \texttt{tactic}, \Gamma_2 \vdash \sigma_2)$$ where $$\Gamma_1, \Gamma_2$$ are proof
+contexts before and after application of `tactic`, and
+$$\sigma_1, \sigma_2$$ are goals before and after `tactic`.
 From this database of triples, the Tactician can then suggest possible
 tactics by matching the current context and goal. It can also do a
 tree search for proofs by applying tactic candidates, and searching
@@ -427,7 +425,7 @@ Aigner et. al. 2010. Proofs from THE BOOK, 4th ed.,  pp. 257-259.
 * <a id="ErdosProof">[ErdosProof] </a>
 P. Erdös, A. Rényi, V. T. Sós. On a Problem in Graph Theory. 1966.
 Studia Math. Hungar. 1, 215-235, Theorem 6. 
-*Note:* To me it's not the same as the book proof; it reformulates to lines in the projective plane and cites [[Baer66]](#Baer66) for the implication of $n=k^2-k+1$ to $(k-1)\ | k^2$. Skimming the Baer66 article I couldn't find the linear algebra I used; I didn't read it but it could just as well be a counting argument like in [[Friendship72]](#Friendship72).
+*Note:* To me it's not the same as the book proof; it reformulates to lines in the projective plane and cites [[Baer66]](#Baer66) for the implication of $$n=k^2-k+1$$ to $$(k-1)\ | k^2$$. Skimming the Baer66 article I couldn't find the linear algebra I used; I didn't read it but it could just as well be a counting argument like in [[Friendship72]](#Friendship72).
 
 * <a id="Baer66">[Baer66] </a>
 R. Baer. 1946. Polarities in finite projective planes, Bulletin of the American Math. Soc. 52., pp. 77-93.

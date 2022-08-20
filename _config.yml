@@ -1,0 +1,9 @@
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+include:
+  - master_project_proposal.md
+
+# theme: jekyll-theme-tactile
