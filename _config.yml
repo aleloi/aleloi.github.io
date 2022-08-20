@@ -6,4 +6,6 @@ relative_links:
 include:
   - master_project_proposal.md
 
+markdown: kramdown 
+
 # theme: jekyll-theme-tactile

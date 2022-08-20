@@ -1,135 +1,184 @@
+Link to this document: [`aleloi.github.io/master_project_proposal.html`](https://aleloi.github.io/master_project_proposal.html)
+
+Date: August 2022
 # Automating formal theorem proving with AI and ML
-Possible other titles: Something along the lines of "Generating proof
-terms in dependent type theory with Machine Learning". Or "Automating
-formalized proof steps with ML".
+<!-- Possible other titles: Something along the lines of "Generating proof -->
+<!-- terms in dependent type theory with Machine Learning". Or "Automating -->
+<!-- formalized proof steps with ML". -->
 
-## Project proposal
-Should contain:
-* This is a (vague and broad) project proposal
-* Target audience are potential academic supervisors at KTH that are experts
-  in verification methods or machine learning (I'd like one that works
-  in both, but guess that it is unrealistic).
-* TLDR: 
-	* I want to work on automatic theorem proving with AI / ML. 
-	* I have read up on published papers on ML methods for automation
-      for the proof assistant Coq, and more broadly about Coq
-      automation in general.
-    * I have done a [[smallish Coq project]](#friendship) (2000
-      loc, a bit over 2 weeks of work from start to `Qed` not
-      including time spent learning the system) that formalized a
-      theorem and tried existing automation methods on it.
-    * The current automation methods mostly did not help in my case;
-      what helped most was `sauto` and basic rewriting databases with
-      `simpl`.
 
-## Intro to formal verification
-Formalized theorem proving or /formal verification/ is when a
+## Master thesis project proposal
+Once it's finished, this document should contain possible master
+project ideas for a master project to be done by me  during
+period 1 and 2 of 2023. I am a second year masters student in [Machine Learning](https://www.kth.se/en/studies/master/machine-learning/msc-machine-learning-1.48533) at KTH. The target audience is potential supervisors and examiners, people that may direct me to potential supervisors, or people that may suggest ideas to try and papers to read.
+
+The document contains 
+* an [introduction](#introduction-to-formal-verification) to the topic;
+* a [case study](#case-study-friendship-theorem-and-automation) of proof
+automation systems available for a real formalization project;
+* a survey of existing ML-based proof automation methods for Coq;
+* a list of possible [Master project ideas](#master-project-ideas); hopefully somewhat
+  feasible given the timeframe, my prior knowledge and computation
+  resources.
+
+### TLDR
+I found that the state of proof automation for Coq proof
+development with `mathcomp` and `SSReflect` is rather poor. The most
+useful system I found was `autorewrite` which has existed since at least 1999.
+To my knowledge, it has not underwent any significant changes. Next in
+order of usefulness is the `sauto` part of CoqHammer, and the `ring`
+and `lia` tactics.
+
+I want to spend a full academic semester on improving Coq automation.
+That could be trying novel ML techniques for generating proof terms or
+tactics, or adapting existing ML systems to work in more contexts.
+
+
+* **Table of contents**
+
+* Placeholder for Table of Content (Must not be removed)
+{:toc}
+
+
+
+## Introduction to formal verification
+Formalized theorem proving or *formal verification* is when a
 mathematical proof is written in a specific format where each step can
 be checked by a computer [[LeanIntro]](#leanintro). Proof steps could
 be axioms or the application of a previously proved results. When high
 confidence in the truth of a logical statement is desired, and a
 "normal" human written proof is for some reason not enough, one can
 employ formal verification methods. Examples include verifying that
-cryptographic algoritms are secure [[CertiCript]](#certicript),
-[[CryptoSE]](https://crypto.stackexchange.com/a/34326), blockchain contracts
+cryptographic algorithms are secure [[CertiCript]](#certicript),
+[[CryptoSE]](https://crypto.stackexchange.com/a/34326), block chain contracts
 [[Nielsen19]](#nielsen19) or that a digital hardware circuit performs according
-to its specification [Braibant 2013]. Generally, when cost of bugs is
+to its specification [[Braibant 2013]](#braibant13). Generally, when cost of bugs is
 high, and a pen-and-paper human written proof is difficult to produce
-or verify, formal verification methods can reduce expected costs [Kern
-99 survey, sec 1; TODO not what article says]
+or verify, formal verification methods can reduce expected costs [[[Kern
+99 survey]](#kern99), sec 1; implied not explicit].
 
 A different motivation for the need of formal verification is that
-even the field of Mathematics is undergoing what has been called a
-replication crisis [replication crisis paper]. Published proofs often
-have gaps, and are shown to sometimes be false
-[https://www.andrew.cmu.edu/user/avigad/meetings/fomm2020/slides/fomm_buzzard.pdf]. [replication
-crisis paper], [https://www.nature.com/articles/d41586-020-00998-2]
-and [https://www.math.columbia.edu/~woit/wordpress/?p=12220] describe
-the case of Shinichi Mochizuki that has published what he claims is a
-proof of the abc conjecture
-[https://en.wikipedia.org/wiki/Abc_conjecture]. Leading matematicians
+even the field of mathematics is undergoing what has been called a
+replication crisis
+[[ReplicationCrisisMath]](#replicationcrisismath). Published proofs
+often have gaps, and are shown to sometimes be false 
+[[KevinBuzzardPresentation]](#buzzard20).
+
+[[ReplicationCrisisMath]](#replicationcrisismath), [this Nature
+article](https://www.nature.com/articles/d41586-020-00998-2), and
+[this research
+blog](https://www.math.columbia.edu/~woit/wordpress/?p=12220) describe
+the case of Japanese mathematician Shinichi Mochizuki that has
+published what he claims is a proof of the abc conjecture
+[https://en.wikipedia.org/wiki/Abc_conjecture]. Leading mathematicians
 claim to have found a hole in the proof, while Mochizuki claims that
-they have misunderstood it. [replication crisis paper] describes the
-situation as 
+they have misunderstood it. The replication crisis paper describes the
+situation as
 
 > [...] we end up now with the absurd situation that abc is a theorem
 > in Japan while still an open conjecture in Germany.
 
-[https://www.andrew.cmu.edu/user/avigad/meetings/fomm2020/slides/fomm_buzzard.pdf]
-has examples of famous proofs which still have unfilled gaps including
-Fermats Last theorem by Wiles, and the classification of finite simple
-groups
+[[KevinBuzzardPresentation]](#buzzard20)
+has examples of famous proofs which still have large unfilled gaps including
+Fermat's Last theorem by Wiles, and the classification of finite simple
+groups.
 
 Even though many logical statements have been formalized, developing
-formal proofs is time consuming and tedious [Hammer paper, page 2, introduction]. Since [19?0s; ref] research has been done
-on automating parts of this process.
+formal proofs is time consuming and tedious [[[Czaika18]](#czajka18),
+page 2, introduction]. In my experience, it takes between weeks to
+months to learn Coq to basic proficiency, given sufficient
+mathematical literacy. Since at least the days of Hilbert and Gödel,
+mathematicians have thought and researched whether proofs can be
+constructed by algorithm.
 
 An ambitious long-term vision that I would like to contribute to is a
 system that reads human written mathematical text, automatically
 translates theorem and lemma formulations into computer-readable form,
-and attempts to also translate the proofs. [I think I saw this in a
-quora post]. Google is rumored to be working on a system like this [https://www.andrew.cmu.edu/user/avigad/meetings/fomm2020/slides/fomm_buzzard.pdf, Markus Rabe, Kevin Buzzard page 24].
+and attempts to also translate the proofs. Google is rumored to be working on a system like this [[[KevinBuzzardPresentation]](#buzzard20), Markus Rabe, Kevin Buzzard page 24].
 
-### Intro
-Should cover:
-* why formalized math is important (smart contracts / mad Japanese
-  mathematician / replication crisis in math / bugs in software)
-* that much of it is tedious (cite CoqHammer and Tactician; find
-  something more to cite; link to case study / example section)
-* the "vision" - system reads math article, extracts claims and
-  definitions in formalized form and PROVES implication steps *by
-  itself*.
+### Why Coq rather than other proof assistants
+The point of this section was originally to motivate the choice of Coq
+(or possibly Lean) over other proof assistants. Before writing it I
+had the misconception that Martin-Löf style dependent type theory as
+used in Coq, Lean and Agda is more powerful than the typed lambda
+calculus used in e.g. HOL-light. I thought that the underlying logic
+of Coq is powerful enough to create a model of the Von Neumann
+hierarchy of sets and prove that the ZFC axioms follow from the
+construction. Since ZFC is accepted as a foundation for mathematics,
+Coq style logic would allow to formalize all mathematics as well.
 
-## Formalized mathematics
-*What's the point of this section? Originally to motivate the choice
-of Coq before Lean and the HOL systems, but that's not its content.*
+This is a misconception, since both Coq and HOL-light are powerful
+enough to create a model of ZFC with provable
+axioms. [[SetTypeTypeSet](#settypetypeset) shows that the logic of Coq
+is as powerful as ZFC with infinitely many inaccessible cardinals;
+thus all mathematics can be formalized. [[ZFCInHOL]](#zfcinhol)
+describes a formalization of ZFC in HOL, which makes it powerful
+enough to encode all standard mathematics as well.
 
-Formal verification systems are not based on the Zermelo-Frankel+Choice (ZFC)
-axiom system that has been accepted to be a foundation of
-mathematics. ZFC has a short number of axioms (about 10, [TODO source: Freddie's logic textbook alt Napkin, but napkin has mistakes...]),
-with statements like "there exists an empty set", "two sets are equal if their elements are equal", "given two sets, there is a set that is their union that contains elements of each and nothing else". 
+My only valid argument for Coq, is that it is what I learned in type
+theory class under late Erik Palmgren, and that I don't have
+significant experience working with any other proof assistant. I also
+have the impression that more articles are published on proof
+automation in Coq compared to other proof assistants.
 
-[Brujin 95] explains why there are better choices than ZFC: ZF is a theory of
-untyped sets, but humans working with formal verifications think in
-categories which are called types. To me, adding types on top of ZF
-seems much harder than starting with a system that has types as
-primitive concepts. A proof assistant should let users reason about
-e.g. sets of functions or sets of group objects. [Brujin 95] has this
-example on the lack of types in ZFC:
+That said, if learning a different proof assistant is not an issue, I
+can imagine working with a different system. `Lean` would be
+interesting, because it is said to have been developed with automation
+in mind. `agda` would be interesting because it is
+Swedish. `Isabelle/HOL` because it seems to have more formalized
+theorems than Coq.
 
-> Theoretically, it seems to be perfectly legitimate to ask whether
-> the union of the cosine function and the number e (the basis on
-> natural logarithms) contains a finite geometry.
+
+<!-- Martin-Löf style dependent type theory proof assistants such that  Coq  Lean -->
+<!-- as a proof system over HOL-light or  -->
+
+<!-- Formal verification systems are not based on the Zermelo-Frankel+Choice (ZFC) -->
+<!-- axiom system that has been accepted to be a foundation of -->
+<!-- mathematics. ZFC has a short number of axioms (about 10, [TODO source: Freddie's logic textbook alt Napkin, but napkin has mistakes...]), -->
+<!-- with statements like "there exists an empty set", "two sets are equal if their elements are equal", "given two sets, there is a set that is their union that contains elements of each and nothing else".  -->
+
+<!-- [Brujin 95] explains why there are better choices than ZFC: ZF is a theory of -->
+<!-- untyped sets, but humans working with formal verification think in -->
+<!-- categories which are called types. To me, adding types on top of ZF -->
+<!-- seems much harder than starting with a system that has types as -->
+<!-- primitive concepts. A proof assistant should let users reason about -->
+<!-- e.g. sets of functions or sets of group objects. [Brujin 95] has this -->
+<!-- example on the lack of types in ZFC: -->
+
+<!-- > Theoretically, it seems to be perfectly legitimate to ask whether -->
+<!-- > the union of the cosine function and the number e (the basis on -->
+<!-- > natural logarithms) contains a finite geometry. -->
 	 
-Typed systems forbid asking questions like this. [Note: Coq is
-powerful enough to define Von Neumann sets and define an encoding of
-the cosine function and the number $$e$$ as sets. Type theory does
-not strictly /forbid/ asking this question; it just requires repeating
-the construction of real analysis and (a few layers of) the Von
-Neumann universe on top of Coq types. Ref: [SetTypeTypeSet]]
+<!-- Typed systems forbid asking questions like this. [Note: Coq is -->
+<!-- powerful enough to define Von Neumann sets and define an encoding of -->
+<!-- the cosine function and the number $$e$$ as sets. Type theory does -->
+<!-- not strictly /forbid/ asking this question; it just requires repeating -->
+<!-- the construction of real analysis and (a few layers of) the Von -->
+<!-- Neumann universe on top of Coq types. Ref: [SetTypeTypeSet]] -->
 
-Popular formal verification systems use some form of typed lambda
-calculi [Hales 2008]. I am only familiar with Martin-Löf Dependent
-Type Theory as it is used in the Coq and Lean proof assistants [TODO
-link].
+<!-- Popular formal verification systems use some form of typed lambda -->
+<!-- calculi [Hales 2008]. I am only familiar with Martin-Löf Dependent -->
+<!-- Type Theory as it is used in the Coq and Lean proof assistants [TODO -->
+<!-- link]. -->
 
-### Isn't HOL/Isabelle easier?
-I know only Coq/Lean because that is what I learned in type theory
-class and then worked on independently. It seems that HOL-based
-systems (HOL-light, Isabelle) have more difficult theorems formalized
-[e.g. 100 theorems, https://www.cs.ru.nl/~freek/100/]. 
-Unsanswered questions (by me):
-* is the state of automation in HOL / Isabelle better than Coq / Lean?
-* would it be considerably easier to formalize a reasonably complex
-  (100 pages of proof) theorem in HOL / Isabelle rather than Coq /
-  Lean?
-* is there a logic difference in between HOL and Coq logic (CIC). That
-  is: is there a theorem that cannot be stated or proven in one but
-  can in the other?
-	* I think I know the answer to this: NO, both are similarly
-      powerful. https://www.isa-afp.org/entries/ZFC_in_HOL.html is a
-      construction of ZFC in HOL; and [SetTypeTypeSet] shows that Coq
-      can encode ZFC with infinitely many inacessible ordinals.
+
+<!-- ### Isn't HOL/Isabelle easier? -->
+<!-- I know only Coq/Lean because that is what I learned in type theory -->
+<!-- class and then worked on independently. It seems that HOL-based -->
+<!-- systems (HOL-light, Isabelle) have more difficult theorems formalized -->
+<!-- [e.g. 100 theorems, https://www.cs.ru.nl/~freek/100/].  -->
+<!-- Unanswered questions (by me): -->
+<!-- * is the state of automation in HOL / Isabelle better than Coq / Lean? -->
+<!-- * would it be considerably easier to formalize a reasonably complex -->
+<!--   (100 pages of proof) theorem in HOL / Isabelle rather than Coq / -->
+<!--   Lean? -->
+<!-- * is there a logic difference in between HOL and Coq logic (CIC). That -->
+<!--   is: is there a theorem that cannot be stated or proven in one but -->
+<!--   can in the other? -->
+<!-- 	* I think I know the answer to this: NO, both are similarly -->
+<!--       powerful. https://www.isa-afp.org/entries/ZFC_in_HOL.html is a -->
+<!--       construction of ZFC in HOL; and [SetTypeTypeSet] shows that Coq -->
+<!--       can encode ZFC with infinitely many inaccessible ordinals. -->
 
 ### Coq example
 The example below shows a proof of $$(\exists (a\in A): \neg B(a)) \Rightarrow \neg (\forall (a\in A): B(a))$$ in the Coq system.
@@ -179,30 +228,35 @@ works for some proofs. The third example shows the commands of the
 *tactic language*.  The fourth is a mix between constructing proof
 terms and using proof tactics.
 
-### Formalized maths
-* There is DT-TT and HOL; link to ACM survey article. Can be viewed as
-  alternative axiomatic systems for foundation of Mathematics compared
-  to ZF+Choice. [Need to talk to a logician!] More suited for
-  computer-formalized maths because of the structure [TODO: explain
-  this to others and myself: ZFC+Choice only talks about sets, sets of
-  sets, sets of sets of sets ... There is no structure; one can take
-  the union of the function *sin* and the number 2 and ask whether the
-  result has a particular topology (survey article)]
-* Why is DT-TT and not HOL: I *think* that DT-TT is more
-  powerful. Should look it up. Practically, I learned Coq in type
-  theory class. In a choice between Coq and Lean I chose Coq because
-  it seemed to have a more active community, more published articles.
-  [TODO: read about DT-TT vs HOL vs 'normal' math axioms.]
+Below is another example. This is Figure 1 of [[CoqGym]](#coqgym).
+![addition associative](coqgym_coq_figure.png)
+
+
+<!-- ### Formalized maths -->
+<!-- * There is DT-TT and HOL; link to ACM survey article. Can be viewed as -->
+<!--   alternative axiomatic systems for foundation of Mathematics compared -->
+<!--   to ZF+Choice. [Need to talk to a logician!] More suited for -->
+<!--   computer-formalized maths because of the structure [TODO: explain -->
+<!--   this to others and myself: ZFC+Choice only talks about sets, sets of -->
+<!--   sets, sets of sets of sets ... There is no structure; one can take -->
+<!--   the union of the function *sin* and the number 2 and ask whether the -->
+<!--   result has a particular topology (survey article)] -->
+<!-- * Why is DT-TT and not HOL: I *think* that DT-TT is more -->
+<!--   powerful. Should look it up. Practically, I learned Coq in type -->
+<!--   theory class. In a choice between Coq and Lean I chose Coq because -->
+<!--   it seemed to have a more active community, more published articles. -->
+<!--   [TODO: read about DT-TT vs HOL vs 'normal' math axioms.] -->
   
 
 ## Case study, Friendship Theorem and automation
 The Friendship theorem states that in a party of n persons, if every
 pair of persons has exactly one common friend, then there is someone
 in the party who is everyone else's friend
-[[Friendship72]](#friendship72). Frendship is assumed to be
+[[Friendship72]](#friendship72). Friendship is assumed to be
 irreflexive (no one is a friend of themselves) and symmetric (if `x`
 is friends with `y`, then `y` is friends with `x`). `n` has to be
-finite and nonzero. A Coq formulation of this theorem is
+finite and nonzero. I formulated and proved this theorem in Coq
+[[smallish Coq project]](#friendship). The Coq formulation is:
 
 ```coq
 Theorem Friendship
@@ -212,7 +266,7 @@ Theorem Friendship
   {u : T | forall v : T, u != v -> F u v}.
 ```
 
-I formalized the proof in [[BookProof]](#FriendshipBook) which is
+I formalized the proof given in [[BookProof]](#FriendshipBook) which is
 claimed to be identical to the first published proof by Erdös et. al.
 [[ErdosProof]](#ErdosProof). The proof goes as follows:
 * Assume that there is *no* person that knows all others. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#no_hub':56)
@@ -308,7 +362,7 @@ definitions or lemmas) in the environment, and filters out the top
 $$N=1024$$ that it deems most likely to be used in the proof of the
 current goal. The filtering can be done with a Naive Bayes relevance
 filter. I don't know what the features for Naive Bayes nor what
-distance is used for k-Nearest Neighbours [Note: it's in section 4 of
+distance is used for k-Nearest Neighbors [Note: it's in section 4 of
 [[Czaika18]](#czajka18), but I have not read that far].
 
 The $$N$$ chosen premises are converted to first order  logic in the TPTP
@@ -349,7 +403,7 @@ forall [R : comUnitRingType] [n : nat] (A : 'M_n),
 
 I suspect that the translation does not result in a provable
 formula. I saved the TPTP file in
-[coqhammer_input.p](coqhammer_input.p) with the hope of investigating
+[`coqhammer_input.p`](coqhammer_input.p) with the hope of investigating
 and eventually contacting the CoqHammer author.
 
 Since this happens on all goals that I tested on, I suspect this has
@@ -358,81 +412,355 @@ packed classes, implicit conversions or boolean reflection makes the
 translation have "insufficient completeness" which leads to the
 situation where nothing can be proven.
 
+Since then I also tried CoqHammer on the simpler goal `Lemma com_addC
+(a b: algC): a+b=b+a.`, and it also didn't work. I think that the
+reason for failure was that that the TPTP output lacked axioms that
+identify `Algebraics.Implementation.zmodType` with `algC =
+Algebraics.Implementation.Type`. I filed an
+[issue](https://github.com/lukaszcz/coqhammer/issues/145) in
+CoqHammer.
+
 #### Coq Tactician
-[[CoqTactician]](#coqtactician) aspieres to be a useable proof
+[[CoqTactician]](#coqtactician) aspires to be a usable proof
 automation framework that learns from earlier proofs.  It builds a
-database of triples $$(\Gamma_1 \vdash \sigma_1, \texttt{tactic}, \Gamma_2 \vdash \sigma_2)$$ where $$\Gamma_1, \Gamma_2$$ are proof
-contexts before and after application of `tactic`, and
-$$\sigma_1, \sigma_2$$ are goals before and after `tactic`.
-From this database of triples, the Tactician can then suggest possible
-tactics by matching the current context and goal. It can also do a
-tree search for proofs by applying tactic candidates, and searching
-again from the resulting proof states.
-
-TODO: actually try; I read the Github issue and the article sentence
-and it doesn't work, but maybe it helps a little?
+database of triples[^1] $$(\Gamma_1 \vdash \sigma_1, \texttt{tactic}, \Gamma_2 \vdash \sigma_2)$$
+where $$\Gamma_1, \Gamma_2$$ are proof contexts before and after
+application of `tactic`, and $$\sigma_1, \sigma_2$$ are goals before
+and after `tactic`.  From this database of triples, the Tactician can
+then suggest possible tactics by matching the current context and
+goal. It can also do a tree search for proofs by applying tactic
+candidates, and searching again from the resulting proof states.
 
 
-Unfortunately, it doesn't work with SSReflect / mathcomp, because
-SSReflect uses a different tactic language.
+[[TacticianInDepth]](#tacticianindepth) describes the
+implementation. Tactic suggestion works by computing a custom textual
+similarity score between the current goal and all recorded
+$$\Gamma_i$$. Care is taken to detect terms that are more important to
+a given proof state.
 
-## ML
+I think that without considerable tweaking, the Tactician will not
+perform as well for `mathcomp/SSRewrite` as for the standard library because of the following (quote from [[TacticianInDepth]](#tacticianindepth)):
+
+> At the moment, we see every vernacular command as one tactic, except
+> for tactic composition (tac1; tac2) and tactic dispatching (tac1;
+> [tac2 | tac3]).
+
+In `mathcomp/SSRewrite` it is very common with tactics with many arguments. E.g.
+this representative proof snippet from somewhere in [`algebra/poly.v`](https://github.com/math-comp/math-comp/blob/master/mathcomp/algebra/poly.v):
+```coq
+move=> reg_d lt_r_d; rewrite addrC addr_eq0.
+have [-> | nz_q] := eqVneq q 0; first by rewrite mul0r oppr0.
+apply: contraTF lt_r_d => /eqP->; rewrite -leqNgt size_opp.
+rewrite size_proper_mul ?mulIr_eq0 ?lead_coef_eq0 //.
+```
+
+If Tacticias would use the methodology they use for `Ltac1`, both
+`apply: contraTF lt_r_d => /eqP->` and `rewrite size_proper_mul
+?mulIr_eq0 ?lead_coef_eq0 //` would count as a single tactic. The
+first may be relatively general, but the second one is practically
+only applicable in only one case.
+
+Currently, tactician doesn't support SSReflect / mathcomp, because
+SSReflect uses a different tactic language from `Ltac1`. Therefore I
+have not been able to evaluate it.
 
 
+`TODO`: actually try; I read the Github issue and the article sentence
+that it doesn't work, but maybe it helps a little?
+
+### Deep Learning for the case study Coq project
+I did not try CoqGym, which is described in [CoqGym](#CoqGym). Based
+on the grammar of Ltac given in the article [[CoqGym]](#coqgym), I
+don't think it will work for the `SSReflect` proof language.
+
+I do not think Proverbot9001 will work right away either, because as I
+understand it is tailor-made for one particular project.
+
+## Deep Learning based proof automation
+### CoqGym
+The first article I read on the topic was [[CoqGym]](#coqgym). It
+constructs a complete Deep Learning system capable of proving
+nontrivial theorems by interacting with Coq. CoqGym considers the
+proving process to be a directed graph, where a node is the complete
+proof state consisting of the goal and the local environment. Edges
+are tactics. A finished proof is supposed to be a tree. It is a little
+unclear to me whether this is really a tree: a tactic may decompose a
+goal in several subgoals. Then each of these subgoal nodes should be
+connected to the original goal, but then one needs more edges than
+one! I think that instead a non-leaf goal should be annotaded with the
+tactic that is applied at that point. In any case, this is unimportant
+semantics.
+
+The DL model of CoqGym has two main parts. One is the encoding of
+lemmas and goals into fixed length vectors. This is done by Tree LSTM,
+which is a small modification of LSTM to handle tree-structured data
+[[TreeLSTM]](#treelstm). Abstract syntax trees of lemmas and goals are
+extracted from Coq and encoded to fixed length vectors by the Tree
+LSTM component.  The other major part is a subcomponent that outputs
+syntax trees from a specified grammar. This is done by constructing an
+AST by a linear sequence of steps, where each step is the expansion of
+a non-terminal according to production rules of the grammar. When
+expanding a nonterminal, the component outputs a vector softmax
+probabilities, one for each expansion rule of that nonterminal
+[[YinNeubig17]](yinneubig17).
+
+Using a grammar-based tactic generation module allows the CoqGym to
+try tactics that are not present in the training data. This is
+different from e.g. CoqTactician.
+
+From experiment result tables in I draw the conclusion that CoqGym is
+overall weaker than CoqTactician. This is based on relative
+performances compared to CoqHammer, but it is difficult to say for
+sure, because CoqGym evaluates on all Coq proofs they could find while
+CoqTactician only evaluates on the standard library.
+
+TODO: write a bit more on how they thain (like, what is the loss?),
+and on what dataset.
+
+I have done a small successful project that encodes computer program
+code to vectors with TreeLSTM in
+[[aleloi/ast-classification]](#ast-classification).
+
+### Proverbot9001
+[[Proverbot]](Proverbot) is another deep learning-based system for Coq
+proof search. I have not read the linked article. Figure 9 of the article
+(copied below) shows a comparison with CoqHammer and CoqGym. Evaluated
+on one particular project, Proverbot performs significantly better
+than CoqGym.
+
+<img src="proverbot.png" alt="Staples are higher!" width="500"/>
+
+### OpenAI papers
+This year, OpenAI published [Solving (Some) Formal Math Olympiad
+Problems](https://openai.com/blog/formal-math/).  It is extremely
+impressive. Prior work struggles with short proofs that contain just a
+a few steps, while the OpenAI system generates proofs that are tens of
+steps long. After reading the blog post, I first thought that I could
+do nothing to contribute to proof automation because OpenAI has
+already solved the problem, but after carrying on my own Coq project I
+found that automation in Coq is still severely lacking.
+
+TODO: read the paper, discuss, evaluate the role of the inequality
+generator. Also read about GPT-f.
+
+### Reinforcement learning
+I am *sure* I saw an article that tried this for Coq, but I can't find
+it now.
+
+
+## Master project ideas
+Deep learning based proof automation methods for Coq have been
+researched for ca 5 years. Yet there is still no DL-based system that
+is widely used when developing new proofs. [[Czaika18]](#Czaika18)
+notes that (in the context of premise selection):
+
+> More powerful machine learning algorithms perform significantly
+> better on small benchmarks [1], but are today too slow to be of
+> practical use in ITPs [34,58]. 
+
+[[CoqTactician]](#coqtactician) describes a major point in favor of
+their system is the ease of use:
+
+> Ease of installation is essential to reach solid user adoption. To
+> facilitate this, the system should be implemented in Ocaml (Coq's
+> implementation language), with no dependencies on machine learning
+> toolkits written in other languages like Python or
+> Matlab. Compilation and installation will then be just as easy as
+> with a regular Coq release.
+
+In their survey of existing proof automation methods,
+[[CoqTactician]](#coqtactician) implies that current deep learning
+systems for Coq proofs are slow, difficult to set up, or not geared
+towards end users.
+
+On one hand, it would be nice tweaking a deep learning algorithm that
+generates tactics or proof terms. On the other I realize that it would
+be difficult to achive more than replication or an insignificant
+improvement of one of the existing systems. I think I could do a more
+impactful project by **converting proof-of-concept research systems into
+usable proof automation tools**. 
+
+After reading a few articles, I have the following impressions:
+1. All available open source Coq code is barely enough for small DL
+   methods and nowhere close to the data requirements of large textual
+   models. TODO: here I could link to the "scaling law" paper and say
+   something about where we are on the scaling curve. 
+
+2. Reinforcement-learning-style "self play" to generate more training
+   data doesn't work right away. The idea would be to let the model
+   try "exploring the world" where an action is any tactic, and a
+   state is a set of goals to prove (more than one, because some
+   tactics may split a goal in several). The goal is to move (by
+   issuing a sequence of tactics) to the final state where everything
+   is proven. The problem is that we need lots of easy lemmas so that
+   the agent actually finds a way to the goal and is able to update
+   its gradients. The last OpenAI partially solved it by making an
+   inequality generator - it generates progressively harder
+   inequalities for a model to learn from.
+   
+3. The proof language Ltac is too big. I very much doubt CoqGym to be
+   able to handle custom-written tactics. They had a grammar for Ltac,
+   but I don't think it was a full grammar or that it handled custom
+   Ltac literals. I have not found any deep learning paper that
+   handles the SSReflect proof language for mathcomp.
+   
+One possible idea is then to focus on generating more (synthetic)
+data.
+
+A list of more concrete ideas:
+* Adapt Tactician to work with more proof languages, e.g. SSReflect
+  (logic, software engineering).
+
+* Investigate why exactly deep learning (e.g. deep graph learning like
+  TreeLSTM) is impractical for premise selection, and whether there
+  are ways to make it work. Doing `from mathcomp Require Import
+  all_ssreflect` brings something like 20000 entities in scope. I
+  imagine a DL system that encodes all of them to fixed length vectors
+  during training. During proof development, I imagine the system
+  encode the context and goal into a vector of the same length, and
+  then pick premises based on a vector similarity score. I expect that
+  to scale well with the number of lemmas, and think that it could
+  work decently fast. Adding this technique to CoqHammer could make it
+  prove a larger percentage of theorems, and make it find proofs
+  faster. (deep learning, software engineering).
+
+* Make a study of the predictability or entropy of the language of
+  proof; compare predictive performance of different DL algorithms.
+  Given the the text of a proof file up to a specific point, how well
+  do different DL algorithms predict the next token? How does it
+  change if the algorithm has access to the current Coq proof state?
+  Investigate for RNNs, LSTMs, Transformers, AST-aware algorithms
+  etc. How does it compare to programming languages? (easy, theory,
+  deep learning). [When searching for what cites CoqGym on Google
+  Scholar, I found something related to this according to the title
+  and abstract. Try to find it again?]
+
+* While a Coq user user develops a proof, run a tree proof search
+  asyncronously in the background and keep intermediate proof
+  states. Use Coq Tactician or any other system to predict or rank
+  tactics. Make a tool that ranks found states based on how close they
+  are estimated to be to Qed (possibly take it from a Coq
+  Reinforcement Learning project), and display them in a continuously
+  updated list to the user. Make a UI for CoqIde or Proof
+  General. (machine learning, software engineering, possibly deep
+  learning).
+
+* Check if predicting the next proof state together in addition to
+  predicting next tactic helps. I bet it does! That's a way to get
+  more training data; the model would learn how Coq works better.
   
+  
+On the data augmentation idea:
+* Execute a random tactic from a human-written proof state. Probably
+  not fully random; (1) it should not given an error, (2) it should
+  result in a provable goal; can check with CoqHammer or sauto, (3) maybe it
+  should come from a tactic predictor like CoqTactician / CoqGym. Use
+  this to generate many more proof states.
+
+* Tweak the context by adding random lemmas / removing random
+  premises. Maybe not fully random; could use premise selection to
+  insert a likely lemma.
+* Similarly to the inequality generator from OpenAI: try to generate
+  algebraic identities or logical tautologies? But forbid the trained
+  model from using 'firstorder / tauto / (e)auto / lia / lra / ring /
+  field' tactics ?
+
+In general:
+
+* Read a few papers more, including the more recent OpenAI ones. Try
+  CoqGymn/ASTic, Proverbot, etc and hopefully get some new ideas for a
+  project.
+  
+
+
+
+## Practicalities / about me.
+**When can I start?**  I'm doing full time coursework during the
+Autumnt semester. I will be able to do some article reading, but
+nothing major. I may be able to pass some thesis work as a project for
+DD2412 Deep Learning Advanced Course or EL2805 Reinforcement
+Learning. I will be able to start full time at the beginning of January
+2023.
+
+**Where can I work physically?** Around Stockholm. 
+
+**Grade transcripts, CV, letters of recommendation?** Available upon
+request. In short, my background is in pure mathematics (B.S.) and
+theoretical computer science (unfinished M.S.). I've worked 5 years as
+a software engineer, and am now back in university to get a Masters
+degree.
+
+**Amount of effort I'm willing to put in?** Full time work for one
+semester including thesis writing. I would like the end result to be
+good enough to have a decent chance at a PhD student position at SU or
+KTH. I don't want the thesis to spill over summer 2023.
+
   
 ## TODOs
-* Finish reading about HOL in the survey article
-* Find something about Coq/Lean vs HOL; is Coq more powerful?
-* CIC / HOL vs ZFC - is there a difference?
-* Gödel's theorem: 'False' is not inhabited, so you can't prove it in
-  CIC. CIC is definitely powerful enough to encode Peano numbers. By
-  Gödel it shouldn't be possible to prove CIC consistent. But
-	  shouldn't consistency mean that you cannot prove False? Check 
+* Finish reading about HOL in the survey article [[Hales 2008]](#hales08). Unfortunately no
+  time to learn HOL properly.
+* Find something that compares use of Coq / HOL. Are they used in
+  different domains?
+* Gödel's theorem: 'False' is not inhabited, so there is no proof of
+  `False` in Martin-Löf TT. CIC (which is based on Martin Löf TT) is
+  definitely powerful enough to encode Peano numbers. By Gödel it
+  shouldn't be possible to prove CIC consistent. But shouldn't
+  consistency mean that you cannot prove False? Check, what Gödel's
+  theorem actually says, maybe ask an expert.
+* Read the 'Proverbot9001' paper.
+* Finish reading the GPT-f and OpenAI Lean paper.
+* Install and try running some of the DL projects.
+* CoqGym was very cheap to train; maybe try re-training / at least
+  look at the code?
+* Merge [[AutomationBranch]](https://github.com/aleloi/coq-friendship-theorem/blob/more_automation/theories/adj2_matrix.v#L25-L32); make a released version; ask to publish to the package list.
+* Write an email about my [pull
+  request](https://github.com/coq-community/coq-100-theorems/pull/33)
+  to 100 formalized theorems.
+* Make a pull request to mathcomp with my 3-4 matrix lemmas.
 
 ## References
 * <a id="friendship">[smallish Coq project]</a> 
-https://github.com/aleloi/coq-friendship-theorem.
+[https://github.com/aleloi/coq-friendship-theorem](https://github.com/aleloi/coq-friendship-theorem).
 Alex Loiko, 2022.  Proof of the Frendship Theorem in Coq.
 
 * <a id="leanintro">[LeanIntro]</a>
-https://leanprover.github.io/theorem_proving_in_lean/introduction.html.
+[https://leanprover.github.io/theorem_proving_in_lean/introduction.html](https://leanprover.github.io/theorem_proving_in_lean/introduction.html).
 Jeremy Avigad, Leonardo de Moura, Soonho Kong, 2017. Introduction
 to theorem proving in Lean.
 
 * <a id="certicrypt">[CertiCrypt]</a>
 Barthe Gilles , Benjamin Grégoire,   Santiago Zanella Béguelin, 2009.
 Formal Certification of Code-Based Cryptographic Proofs. 
-https://doi.org/10.1145/1594834.1480894.
+[https://doi.org/10.1145/1594834.1480894](https://doi.org/10.1145/1594834.1480894).
 ACM SIGPLAN Notices, Volume 44, Issue 1, January 2009, pp 90–101.
 
-* <a id="CryptoSE">https://crypto.stackexchange.com/a/34326</a>
+* <a id="CryptoSE" href="https://crypto.stackexchange.com/a/34326">https://crypto.stackexchange.com/a/34326</a>
 Biv, 2016. Comprehensive StackExchange answer on the use of formal
 methods in cryptography.
 
 * <a id="Nielsen19">[Nielsen19] </a>
-  Jakob Botsch Nielsen, Bas Spitters. 2019. https://arxiv.org/abs/1911.04732.
+  Jakob Botsch Nielsen, Bas Spitters. 2019. [https://arxiv.org/abs/1911.04732](https://arxiv.org/abs/1911.04732).
   Smart Contract Interactions in Coq.
   
 * <a id="Friendship72">[Friendship72] </a>
-Judith Q Longyear, T.D Parsons. 1972. https://doi.org/10.1016/1385-7258(72)90063-7. 
+Judith Q Longyear, T.D Parsons. 1972. [https://doi.org/10.1016/1385-7258(72)90063-7](https://doi.org/10.1016/1385-7258(72)90063-7). 
 The Friendship Theorem.
 
 * <a id="FriendshipBook">[BookProof] </a>
 Aigner et. al. 2010. Proofs from THE BOOK, 4th ed.,  pp. 257-259.
-*Note:* The book proof identical to https://math.mit.edu/~apost/courses/18.204-2016/18.204_Elizabeth_Walker_final_paper.pdf.
+*Note:* The book proof identical to [https://math.mit.edu/~apost/courses/18.204-2016/18.204_Elizabeth_Walker_final_paper.pdf](https://math.mit.edu/~apost/courses/18.204-2016/18.204_Elizabeth_Walker_final_paper.pdf).
 
 * <a id="ErdosProof">[ErdosProof] </a>
 P. Erdös, A. Rényi, V. T. Sós. On a Problem in Graph Theory. 1966.
 Studia Math. Hungar. 1, 215-235, Theorem 6. 
-*Note:* To me it's not the same as the book proof; it reformulates to lines in the projective plane and cites [[Baer66]](#Baer66) for the implication of $$n=k^2-k+1$$ to $$(k-1)\ \shortmid k^2$$. Skimming the Baer66 article I couldn't find the linear algebra I used; I didn't read it but it could just as well be a counting argument like in [[Friendship72]](#Friendship72).
+[^2]
 
 * <a id="Baer66">[Baer66] </a>
 R. Baer. 1946. Polarities in finite projective planes, Bulletin of the American Math. Soc. 52., pp. 77-93.
 
 * <a id="Czaika18"> [Czaika18] </a>
 Łukasz Czajka, Cezary Kaliszyk. 2018. Hammer for Coq: Automation for Dependent Type Theory. *Journal of Automated Reasoning*  volume 61, pp. 423–453. 
-Documentation available on https://coqhammer.github.io.
+Documentation available on [https://coqhammer.github.io](https://coqhammer.github.io).
 
 * <a id="THFo"> [THFo] </a>
 Christoph Benzmüller, Florian Rabe, Geoff Sutcliffe. 2008.
@@ -448,76 +776,87 @@ Volume 11716 of LNAI.
 * <a id="mathcompbook"> [MathCompBook] </a>
 Yves Bertot, Georges Gonthier, Assia Mahboubi, Enrico Tassi. 2020.
 Mathematical Components.
-https://math-comp.github.io/mcb/
+[https://math-comp.github.io/mcb/](https://math-comp.github.io/mcb/).
 
 * <a id="coqtactician"> [CoqTactician] </a>
 Lasse Blaauwbroek, Josef Urban1, Herman Geuvers2. 2020.
 The Tactician (extended version)
 A Seamless, Interactive Tactic Learner and Prover for Coq. 
-https://arxiv.org/abs/2008.00120v1.
+[https://arxiv.org/abs/2008.00120v1](https://arxiv.org/abs/2008.00120v1).
 
 
+* <a id="braibant13"> [Braibant 2013] </a>
+Thomas Braimant, Adam Chlipala. 2013.
+Formal Verification of Hardware Synthesis.
+*Computer Aided Verification*. pp. 213-228.
+ISBN "978-3-642-39799-8".
 
 
-* [Braibant 2013] @InProceedings{10.1007/978-3-642-39799-8_14,
-author="Braibant, Thomas
-and Chlipala, Adam",
-editor="Sharygina, Natasha
-and Veith, Helmut",
-title="Formal Verification of Hardware Synthesis",
-booktitle="Computer Aided Verification",
-year="2013",
-publisher="Springer Berlin Heidelberg",
-address="Berlin, Heidelberg",
-pages="213--228",
-abstract="We report on the implementation of a certified compiler for a high-level hardware description language (HDL) called Fe-Si (FEatherweight SynthesIs). Fe-Si is a simplified version of Bluespec, an HDL based on a notion of guarded atomic actions. Fe-Si is defined as a dependently typed deep embedding in Coq. The target language of the compiler corresponds to a synthesisable subset of Verilog or VHDL. A key aspect of our approach is that input programs to the compiler can be defined and proved correct inside Coq. Then, we use extraction and a Verilog back-end (written in OCaml) to get a certified version of a hardware design.",
-isbn="978-3-642-39799-8"
-}
+* <a id="kern99"> [Kern 99 survey] </a>
+Christoph Kern,   Mark R. Greenstreet. 1999.
+Formal Verification in Hardware Design: A Survey.
+[https://doi.org/10.1145/307988.307989](https://doi.org/10.1145/307988.307989).
+*ACM Trans. Des. Autom. Electron. Syst.*. pp. 123-193. 
 
 
-* [Kern 99 survey] @article{10.1145/307988.307989,
-author = {Kern, Christoph and Greenstreet, Mark R.},
-title = {Formal Verification in Hardware Design: A Survey},
-year = {1999},
-issue_date = {April 1999},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-volume = {4},
-number = {2},
-issn = {1084-4309},
-url = {https://doi.org/10.1145/307988.307989},
-doi = {10.1145/307988.307989},
-abstract = {In recent years, formal methods have emerged as an alternative approach to ensuring the quality and correctness of hardware designs, overcoming some of the limitations of traditional validation techniques such as simulation and testing.There are two main aspects to the application of formal methods in a design process: the formal framework used to specify desired properties of a design and the verification techniques and tools used to reason about the relationship between a specification and a corresponding implementation. We survey a variety of frameworks and techniques proposed in the literature and applied to actual designs. The specification frameworks we describe include temporal logics, predicate logic, abstraction and refinement, as well as containment between ω-regular languages. The verification techniques presented include model checking, automata-theoretic techniques, automated theorem proving, and approaches that integrate the above methods.In order to provide insight into the scope and limitations of currently available techniques, we present a selection of case studies where formal methods were applied to industrial-scale designs, such as microprocessors, floating-point hardware, protocols, memory subsystems, and communications hardware.},
-journal = {ACM Trans. Des. Autom. Electron. Syst.},
-month = {apr},
-pages = {123–193},
-numpages = {71},
-keywords = {case studies, model checking, formal verification, formal methods, survey, hardware verification, language containment, theorem proving}
-}
-* [replication crisis paper] TY  - JOUR
-AU  - Bordg, Anthony
-PY  - 2021
-DA  - 2021/12/01
-TI  - A Replication Crisis in Mathematics?
-JO  - The Mathematical Intelligencer
-SP  - 48
-EP  - 52
-VL  - 43
-IS  - 4
-SN  - 1866-7414
-UR  - https://doi.org/10.1007/s00283-020-10037-7
-DO  - 10.1007/s00283-020-10037-7
-ID  - Bordg2021
-ER  - 
-* [Hales 2008] @article{article,
-author = {Hales, Thomas},
-year = {2008},
-month = {01},
-pages = {},
-title = {Formal Proof},
-volume = {55},
-journal = {Notices of the American Mathematical Society}
-}
+* <a id="replicationcrisismath"> [ReplicationCrisisMath] </a>
+Anthony Bordg.  2021. A Replication Crisis in Mathematics?
+*The Mathematical Intelligencer*. 
+[https://doi.org/10.1007/s00283-020-10037-7](https://doi.org/10.1007/s00283-020-10037-7).
+
+* <a id=buzzard20> [KevinBuzzardPresentation] </a>
+Kevin Buzzard. 2020.
+The future of mathematics?
+*Presentation for a talk given at University of Pittsburgh*.
+[https://www.andrew.cmu.edu/user/avigad/meetings/fomm2020/slides/fomm_buzzard.pdf](https://www.andrew.cmu.edu/user/avigad/meetings/fomm2020/slides/fomm_buzzard.pdf).
+
+* <a id=settypetypeset> [SetTypeTypeSet] </a> 
+Benjamin Werner. 2006. Sets in types, types in sets.
+*Theoretical Aspects of Computer Software.* pp. 530-546.
+[https://doi.org/10.1007/BFb0014566](https://doi.org/10.1007/BFb0014566).
+
+* <a id=zfcinhol> [ZFCInHOL] </a>
+Lawrence C. Paulson. 2019. Zermelo Fraenkel Set Theory in Higher-Order Logic.
+*Archive of Formal Proofs*.
+[https://isa-afp.org/entries/ZFC_in_HOL.html](https://isa-afp.org/entries/ZFC_in_HOL.html).
+
+* <a id=tacticianindepth> [TacticianInDepth] </a>
+Lasse Blaauwbroek, Josef Urban, Herman Geuvers. 2020.
+Tactic Learning and Proving for the Coq Proof Assistant.
+[https://arxiv.org/abs/2003.09140](https://arxiv.org/abs/2003.09140).
+
+* <a id="coqgym"> [CoqGym] </a>
+Kaiyu Yang, Jia Deng. 2019.
+Learning to Prove Theorems via Interacting with Proof Assistants.
+*Proceedings of the 36 th International Conference on Machine
+Learning*.  	
+[https://doi.org/10.48550/arXiv.1905.09381](https://doi.org/10.48550/arXiv.1905.09381).
+
+* <a id="treelstm"> [TreeLSTM] </a>
+K. S. Tai, R. Socher,  C. D. Manning. 2015.
+Improved semantic
+representations from tree-structured long short-term
+memory networks. 
+[https://arxiv.org/abs/1503.00075](https://arxiv.org/abs/1503.00075).
+
+* <a id="yinneubig17"> [YinNeubig17] </a>
+P. Yin, G. Neubig. 2017. A syntactic neural model
+for general-purpose code generation. 
+[https://arxiv.org/abs/1704.01696](https://arxiv.org/abs/1704.01696).
+
+* <a id="proverbot"> [Proverbot] </a>
+Alex Sanchez-Stern, Yousef Alhessi, Lawrence K. Saul, Sorin Lerner. 2020. Generating
+correctness proofs with neural networks. 
+*Proceedings of the 4th ACM SIGPLAN International Workshop on Machine
+Learning and Programming Languages*. pp. 1-10. [https://doi.org/10.1145/3394450.3397466](https://doi.org/10.1145/3394450.3397466).
+
+* <a id="ast-classification"> [aleloi/ast-classification] </a>
+Alex Loiko. 2022. 100-fold program classification with Tree LSTM.
+[https://github.com/aleloi/ast-classification](https://github.com/aleloi/ast-classification).
+
+* <a id="hales08"> [Hales 2008] </a>
+Thomas Hales. 2008. Formal Proof.
+*Notices of the American Mathematical Society*. Volume 55. Number 11. pp. 1370-1380.
 
 * [Brujin 95] 
 @inbook{7f386bbf005243388ff0cb9efc2183ef,
@@ -530,15 +869,10 @@ series = "Cahiers du centre de logique",
 publisher = "Academia-Erasme",
 pages = "27--54",
 booktitle = "The Curry-Howard isomorphism / ed. by P. de Groote",
-
 }
 
-* [SetTypeTypeSet] @inbook{inbook,
-author = {Werner, Benjamin},
-year = {2006},
-month = {10},
-pages = {530-546},
-title = {Sets in types, types in sets},
-isbn = {978-3-540-63388-4},
-doi = {10.1007/BFb0014566}
-}
+## Notes
+
+[^1]: Actually just pairs $$(\Gamma_1 \vdash \sigma_1, \texttt{tactic})$$ according to the description in [[TacticianInDepth]](#tacticianindepth).
+
+[^2]: To me it's not the same as the book proof; it reformulates to lines in the projective plane and cites [[Baer66]](#Baer66) for the implication of $$n=k^2-k+1$$ to $$(k-1)\ \shortmid k^2$$. Skimming the Baer66 article I couldn't find the linear algebra I used; I didn't read it but it could just as well be a counting argument like in [[Friendship72]](#Friendship72).
