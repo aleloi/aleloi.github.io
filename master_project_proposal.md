@@ -220,8 +220,8 @@ claimed to be identical to the first published proof by Erdös et. al.
   *k*-regular. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#regular)
 * Under the assumption, $$n=k^2-k+1$$. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#nk)
 * Under the assumption, $$A^2 = \mathbb{1}\mathbb{1}^\intercal + (k-1)I$$ and $$\operatorname{tr} A = 0$$ where $$A$$ is the $$n\times n$$ adjacency matrix of the graph. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#adj2_eq)
-*  $$A^2 = \mathbb{1}\mathbb{1}^\intercal + (k-1)I$$,  $$\operatorname{tr} A = 0$$, $$k\in \mathbb{N}$$, $$n=k^2-k+1$$ implies $$(k-1)| k^2$$ by linear algebra. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.divisibility.html#tr_adj_rel_nat)
-* $$k\in \mathbb{N}, (k-1)| k^2$$ implies $$k=2$$. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.divisibility.html#k_is_2)
+*  $$A^2 = \mathbb{1}\mathbb{1}^\intercal + (k-1)I$$,  $$\operatorname{tr} A = 0$$, $$k\in \mathbb{N}$$, $$n=k^2-k+1$$ implies $$(k-1)\ \shortmid k^2$$ by linear algebra. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.divisibility.html#tr_adj_rel_nat)
+* $$k\in \mathbb{N}, (k-1)\ \shortmid k^2$$ implies $$k=2$$. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.divisibility.html#k_is_2)
 * $$k=2$$, $$n=k^2-k+1$$ and a $$k$$-regular graph contradict the assumption that no person knows all others. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#fls)
 
 A good example of a non-automated proof is [`Lemma
@@ -425,7 +425,7 @@ Aigner et. al. 2010. Proofs from THE BOOK, 4th ed.,  pp. 257-259.
 * <a id="ErdosProof">[ErdosProof] </a>
 P. Erdös, A. Rényi, V. T. Sós. On a Problem in Graph Theory. 1966.
 Studia Math. Hungar. 1, 215-235, Theorem 6. 
-*Note:* To me it's not the same as the book proof; it reformulates to lines in the projective plane and cites [[Baer66]](#Baer66) for the implication of $$n=k^2-k+1$$ to $$(k-1)\ | k^2$$. Skimming the Baer66 article I couldn't find the linear algebra I used; I didn't read it but it could just as well be a counting argument like in [[Friendship72]](#Friendship72).
+*Note:* To me it's not the same as the book proof; it reformulates to lines in the projective plane and cites [[Baer66]](#Baer66) for the implication of $$n=k^2-k+1$$ to $$(k-1)\ \shortmid k^2$$. Skimming the Baer66 article I couldn't find the linear algebra I used; I didn't read it but it could just as well be a counting argument like in [[Friendship72]](#Friendship72).
 
 * <a id="Baer66">[Baer66] </a>
 R. Baer. 1946. Polarities in finite projective planes, Bulletin of the American Math. Soc. 52., pp. 77-93.
