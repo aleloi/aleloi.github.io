@@ -58,20 +58,21 @@ pen-and-paper human written proof is difficult to produce or verify,
 formal verification methods can reduce expected costs [[[Kern 99
 survey]](#kern99), sec 1; implied not explicit].
 
-A different motivation for the need of formal verification is that
-even the field of mathematics is undergoing what has been called a
-replication crisis
+A different motivation for the need of formal verification comes from
+the field of mathematics. Even pure maths, where in theory we should
+be able to verify that a proof is correct, is undergoing what has been
+called a replication crisis
 [[ReplicationCrisisMath]](#replicationcrisismath). Published proofs
-often have gaps, and are shown to sometimes be false 
+often have gaps, and are shown to sometimes be false
 [[KevinBuzzardPresentation]](#buzzard20).
 
 [[ReplicationCrisisMath]](#replicationcrisismath), [this Nature
 article](https://www.nature.com/articles/d41586-020-00998-2), and
 [this research
 blog](https://www.math.columbia.edu/~woit/wordpress/?p=12220) describe
-the case of Japanese mathematician Shinichi Mochizuki that has
-published what he claims is a proof of the abc conjecture
-[https://en.wikipedia.org/wiki/Abc_conjecture](https://en.wikipedia.org/wiki/Abc_conjecture). Leading mathematicians
+the case of Japanese mathematician Shinichi Mochizuki. Mochizuki  has
+published what he claims is a proof of the [abc conjecture](
+https://en.wikipedia.org/wiki/Abc_conjecture). Leading mathematicians
 claim to have found a hole in the proof, while Mochizuki claims that
 they have misunderstood it. The replication crisis paper describes the
 situation as
