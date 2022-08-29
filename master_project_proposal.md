@@ -117,11 +117,12 @@ thus all mathematics can be formalized. [[ZFCInHOL]](#zfcinhol)
 describes a formalization of ZFC in HOL, which makes it powerful
 enough to encode all standard mathematics as well.
 
-My only valid argument for Coq, is that it is what I learned in type
-theory class under late Erik Palmgren, and that I don't have
-significant experience working with any other proof assistant. I also
-have the impression that more articles are published on proof
-automation in Coq compared to other proof assistants.
+My only valid argument for Coq is my familiarity with it.  I learned
+Coq in type theory class under late Erik Palmgren, have used it in
+several projects since then, and  I don't have significant
+experience working with any other proof assistant. I also have the
+impression that more articles are published on proof automation in Coq
+compared to other proof assistants.
 
 That said, if learning a different proof assistant is not an issue, I
 can imagine working with a different system. `Lean` would be
