@@ -50,12 +50,13 @@ confidence in the truth of a logical statement is desired, and a
 "normal" human written proof is for some reason not enough, one can
 employ formal verification methods. Examples include verifying that
 cryptographic algorithms are secure [[CertiCrypt]](#certicrypt),
-[[CryptoSE]](https://crypto.stackexchange.com/a/34326), block chain contracts
-[[Nielsen19]](#Nielsen19) or that a digital hardware circuit performs according
-to its specification [[Braibant 2013]](#braibant13). Generally, when cost of bugs is
-high, and a pen-and-paper human written proof is difficult to produce
-or verify, formal verification methods can reduce expected costs [[[Kern
-99 survey]](#kern99), sec 1; implied not explicit].
+[[CryptoSE]](https://crypto.stackexchange.com/a/34326), that block
+chain contracts are safe [[Nielsen19]](#Nielsen19) or that a digital
+hardware circuit performs according to its specification [[Braibant
+2013]](#braibant13). Generally, when cost of bugs is high, and a
+pen-and-paper human written proof is difficult to produce or verify,
+formal verification methods can reduce expected costs [[[Kern 99
+survey]](#kern99), sec 1; implied not explicit].
 
 A different motivation for the need of formal verification is that
 even the field of mathematics is undergoing what has been called a
