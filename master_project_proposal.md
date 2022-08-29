@@ -502,7 +502,7 @@ AST by a linear sequence of steps, where each step is the expansion of
 a non-terminal according to production rules of the grammar. When
 expanding a non-terminal, the component outputs a vector soft-max
 probabilities, one for each expansion rule of that non-terminal
-[[YinNeubig17]](yinneubig17).
+[[YinNeubig17]](#yinneubig17).
 
 Using a grammar-based tactic generation module allows the CoqGym to
 try tactics that are not present in the training data. This is
