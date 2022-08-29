@@ -111,7 +111,7 @@ Coq style logic would allow to formalize all mathematics as well.
 
 This is a misconception, since both Coq and HOL-light are powerful
 enough to create a model of ZFC with provable
-axioms. [[SetTypeTypeSet](#settypetypeset) shows that the logic of Coq
+axioms. [[SetTypeTypeSet]](#settypetypeset) shows that the logic of Coq
 is as powerful as ZFC with infinitely many inaccessible cardinals;
 thus all mathematics can be formalized. [[ZFCInHOL]](#zfcinhol)
 describes a formalization of ZFC in HOL, which makes it powerful
