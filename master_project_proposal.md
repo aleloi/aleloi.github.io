@@ -49,9 +49,9 @@ be axioms or the application of a previously proved results. When high
 confidence in the truth of a logical statement is desired, and a
 "normal" human written proof is for some reason not enough, one can
 employ formal verification methods. Examples include verifying that
-cryptographic algorithms are secure [[CertiCript]](#certicript),
+cryptographic algorithms are secure [[CertiCrypt]](#certicrypt),
 [[CryptoSE]](https://crypto.stackexchange.com/a/34326), block chain contracts
-[[Nielsen19]](#nielsen19) or that a digital hardware circuit performs according
+[[Nielsen19]](#Nielsen19) or that a digital hardware circuit performs according
 to its specification [[Braibant 2013]](#braibant13). Generally, when cost of bugs is
 high, and a pen-and-paper human written proof is difficult to produce
 or verify, formal verification methods can reduce expected costs [[[Kern
@@ -70,7 +70,7 @@ article](https://www.nature.com/articles/d41586-020-00998-2), and
 blog](https://www.math.columbia.edu/~woit/wordpress/?p=12220) describe
 the case of Japanese mathematician Shinichi Mochizuki that has
 published what he claims is a proof of the abc conjecture
-[https://en.wikipedia.org/wiki/Abc_conjecture]. Leading mathematicians
+[https://en.wikipedia.org/wiki/Abc_conjecture](https://en.wikipedia.org/wiki/Abc_conjecture). Leading mathematicians
 claim to have found a hole in the proof, while Mochizuki claims that
 they have misunderstood it. The replication crisis paper describes the
 situation as
@@ -84,7 +84,7 @@ Fermat's Last theorem by Wiles, and the classification of finite simple
 groups.
 
 Even though many logical statements have been formalized, developing
-formal proofs is time consuming and tedious [[[Czaika18]](#czajka18),
+formal proofs is time consuming and tedious [[[Czajka18]](#czajka18),
 page 2, introduction]. In my experience, it takes between weeks to
 months to learn Coq to basic proficiency, given sufficient
 mathematical literacy. Since at least the days of Hilbert and Gödel,
@@ -293,7 +293,7 @@ interspersed with lines of the human-written proof from the top.
 
 ### Automation
 There are several automation systems for simplifying the process of
-writing Coq proofs. [[Czaika18]](#czajka18) argues the case for more automation:
+writing Coq proofs. [[Czajka18]](#czajka18) argues the case for more automation:
 
 > Interactive Theorem Proving (ITP) systems [44] become more important
 > in certifying mathematical proofs and properties of software and
@@ -356,22 +356,22 @@ mechanism does not work with `autorewrite`. [Note I don't fully
 understand this].
 
 #### CoqHammer
-[[Czaika18]](#czajka18) is a general purpose automation tool. It works
+[[Czajka18]](#czajka18) is a general purpose automation tool. It works
 by first scanning though all premises (that can be named entities like
 definitions or lemmas) in the environment, and filters out the top
 $$N=1024$$ that it deems most likely to be used in the proof of the
 current goal. The filtering can be done with a Naive Bayes relevance
 filter. I don't know what the features for Naive Bayes nor what
 distance is used for k-Nearest Neighbors [Note: it's in section 4 of
-[[Czaika18]](#czajka18), but I have not read that far].
+[[Czajka18]](#czajka18), but I have not read that far].
 
 The $$N$$ chosen premises are converted to first order  logic in the TPTP
-format [[THFo]](#THFo). When I first read [[Czaika18]](#czajka18) I
+format [[THFo]](#THFo). When I first read [[Czajka18]](#czajka18) I
 got the impression that the output of this step is quantified boolean
 formulas (making all questions about them decidable), while Coq is
 most certainly not decidable. Then I learned that that TPTP is not
 limited to QBF, and that a statement that is provable in Coq need not
-be provable after the translation. [[[Czaika18]](#czajka18) sec 5 says
+be provable after the translation. [[[Czajka18]](#czajka18) sec 5 says
 that the translation is neither sound nor complete].
 
 The TPTP output is then sent to external provers like
@@ -551,7 +551,7 @@ it now.
 ## Master project ideas
 Deep learning based proof automation methods for Coq have been
 researched for ca 5 years. Yet there is still no DL-based system that
-is widely used when developing new proofs. [[Czaika18]](#Czaika18)
+is widely used when developing new proofs. [[Czajka18]](#czajka18)
 notes that (in the context of premise selection):
 
 > More powerful machine learning algorithms perform significantly
@@ -758,7 +758,7 @@ Studia Math. Hungar. 1, 215-235, Theorem 6.
 * <a id="Baer66">[Baer66] </a>
 R. Baer. 1946. Polarities in finite projective planes, Bulletin of the American Math. Soc. 52., pp. 77-93.
 
-* <a id="Czaika18"> [Czaika18] </a>
+* <a id="czajka18"> [Czajka18] </a>
 Łukasz Czajka, Cezary Kaliszyk. 2018. Hammer for Coq: Automation for Dependent Type Theory. *Journal of Automated Reasoning*  volume 61, pp. 423–453. 
 Documentation available on [https://coqhammer.github.io](https://coqhammer.github.io).
 
