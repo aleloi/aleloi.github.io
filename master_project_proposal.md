@@ -684,7 +684,7 @@ Learning. I will be able to start full time at the beginning of January
 
 **Where can I work physically?** Around Stockholm. 
 
-**Grade transcripts, CV, letters of recommendation?** Available upon
+**Grade transcripts, CV, references?** Available upon
 request. In short, my background is in pure mathematics (B.S.) and
 theoretical computer science (unfinished M.S.). I've worked 5 years as
 a software engineer, and am now back in university to get a Masters
