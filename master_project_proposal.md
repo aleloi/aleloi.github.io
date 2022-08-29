@@ -18,7 +18,7 @@ The document contains
 automation systems available for a real formalization project;
 * a survey of existing ML-based proof automation methods for Coq;
 * a list of possible [Master project ideas](#master-project-ideas); hopefully somewhat
-  feasible given the timeframe, my prior knowledge and computation
+  feasible given the time frame, my prior knowledge and computation
   resources.
 
 ### TLDR
@@ -454,7 +454,7 @@ apply: contraTF lt_r_d => /eqP->; rewrite -leqNgt size_opp.
 rewrite size_proper_mul ?mulIr_eq0 ?lead_coef_eq0 //.
 ```
 
-If Tacticias would use the methodology they use for `Ltac1`, both
+If Tactician would use the methodology they use for `Ltac1`, both
 `apply: contraTF lt_r_d => /eqP->` and `rewrite size_proper_mul
 ?mulIr_eq0 ?lead_coef_eq0 //` would count as a single tactic. The
 first may be relatively general, but the second one is practically
@@ -487,7 +487,7 @@ are tactics. A finished proof is supposed to be a tree. It is a little
 unclear to me whether this is really a tree: a tactic may decompose a
 goal in several subgoals. Then each of these subgoal nodes should be
 connected to the original goal, but then one needs more edges than
-one! I think that instead a non-leaf goal should be annotaded with the
+one! I think that instead a non-leaf goal should be annotated with the
 tactic that is applied at that point. In any case, this is unimportant
 semantics.
 
@@ -496,12 +496,12 @@ lemmas and goals into fixed length vectors. This is done by Tree LSTM,
 which is a small modification of LSTM to handle tree-structured data
 [[TreeLSTM]](#treelstm). Abstract syntax trees of lemmas and goals are
 extracted from Coq and encoded to fixed length vectors by the Tree
-LSTM component.  The other major part is a subcomponent that outputs
+LSTM component.  The other major part is a sub-component that outputs
 syntax trees from a specified grammar. This is done by constructing an
 AST by a linear sequence of steps, where each step is the expansion of
 a non-terminal according to production rules of the grammar. When
-expanding a nonterminal, the component outputs a vector softmax
-probabilities, one for each expansion rule of that nonterminal
+expanding a non-terminal, the component outputs a vector soft-max
+probabilities, one for each expansion rule of that non-terminal
 [[YinNeubig17]](yinneubig17).
 
 Using a grammar-based tactic generation module allows the CoqGym to
@@ -514,8 +514,8 @@ performances compared to CoqHammer, but it is difficult to say for
 sure, because CoqGym evaluates on all Coq proofs they could find while
 CoqTactician only evaluates on the standard library.
 
-TODO: write a bit more on how they thain (like, what is the loss?),
-and on what dataset.
+TODO: write a bit more on how they train (like, what is the loss?),
+and on what data-set.
 
 I have done a small successful project that encodes computer program
 code to vectors with TreeLSTM in
@@ -564,7 +564,7 @@ their system is the ease of use:
 > Ease of installation is essential to reach solid user adoption. To
 > facilitate this, the system should be implemented in Ocaml (Coq's
 > implementation language), with no dependencies on machine learning
-> toolkits written in other languages like Python or
+> tool kits written in other languages like Python or
 > Matlab. Compilation and installation will then be just as easy as
 > with a regular Coq release.
 
@@ -575,7 +575,7 @@ towards end users.
 
 On one hand, it would be nice tweaking a deep learning algorithm that
 generates tactics or proof terms. On the other I realize that it would
-be difficult to achive more than replication or an insignificant
+be difficult to achieve more than replication or an insignificant
 improvement of one of the existing systems. I think I could do a more
 impactful project by **converting proof-of-concept research systems into
 usable proof automation tools**. 
@@ -636,7 +636,7 @@ A list of more concrete ideas:
   and abstract. Try to find it again?]
 
 * While a Coq user user develops a proof, run a tree proof search
-  asyncronously in the background and keep intermediate proof
+  asynchronously in the background and keep intermediate proof
   states. Use Coq Tactician or any other system to predict or rank
   tactics. Make a tool that ranks found states based on how close they
   are estimated to be to Qed (possibly take it from a Coq
@@ -676,7 +676,7 @@ In general:
 
 ## Practicalities / about me.
 **When can I start?**  I'm doing full time coursework during the
-Autumnt semester. I will be able to do some article reading, but
+Autumn semester. I will be able to do some article reading, but
 nothing major. I may be able to pass some thesis work as a project for
 DD2412 Deep Learning Advanced Course or EL2805 Reinforcement
 Learning. I will be able to start full time at the beginning of January
