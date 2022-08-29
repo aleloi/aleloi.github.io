@@ -8,15 +8,15 @@ Date: August 2022
 
 
 ## Master thesis project proposal
-Once it's finished, this document should contain possible master
+This document contains possible master
 project ideas for a master project to be done by me  during
 period 1 and 2 of 2023. I am a second year masters student in [Machine Learning](https://www.kth.se/en/studies/master/machine-learning/msc-machine-learning-1.48533) at KTH. The target audience is potential supervisors and examiners, people that may direct me to potential supervisors, or people that may suggest ideas to try and papers to read.
 
 The document contains 
 * an [introduction](#introduction-to-formal-verification) to the topic;
 * a [case study](#case-study-friendship-theorem-and-automation) of proof
-automation systems available for a real formalization project;
-* a survey of existing ML-based proof automation methods for Coq;
+automation systems available for a real formalization project that I've done during this summer;
+* an incomplete survey of existing ML-based proof automation methods for Coq;
 * a list of possible [Master project ideas](#master-project-ideas); hopefully somewhat
   feasible given the time frame, my prior knowledge and computation
   resources.
@@ -710,8 +710,8 @@ KTH. I don't want the thesis to spill over summer 2023.
 * Read the 'Proverbot9001' paper.
 * Finish reading the GPT-f and OpenAI Lean paper.
 * Install and try running some of the DL projects.
-* CoqGym was very cheap to train; maybe try re-training / at least
-  look at the code?
+* CoqGym was very cheap to train (5 days on a several years old
+  consumer GPU); maybe try re-training / at least look at the code?
 * Merge [[AutomationBranch]](https://github.com/aleloi/coq-friendship-theorem/blob/more_automation/theories/adj2_matrix.v#L25-L32); make a released version; ask to publish to the package list.
 * Write an email about my [pull
   request](https://github.com/coq-community/coq-100-theorems/pull/33)
