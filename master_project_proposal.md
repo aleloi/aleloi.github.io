@@ -17,7 +17,7 @@ The document contains
 * a [case study](#case-study-friendship-theorem-and-automation) of proof
 automation systems available for a real formalization project that I've done during this summer;
 * an incomplete survey of existing ML-based proof automation methods for Coq;
-* a list of possible [Master project ideas](#master-project-ideas); hopefully somewhat
+* a list of possible [Master project ideas](#master-project-ideas); hopefully 
   feasible given the time frame, my prior knowledge and computation
   resources.
 
@@ -651,16 +651,21 @@ A list of more concrete ideas:
   
   
 On the data augmentation idea:
-* Execute a random tactic from a human-written proof state. Probably
-  not fully random; (1) it should not given an error, (2) it should
-  result in a provable goal; can check with CoqHammer or sauto, (3) maybe it
-  should come from a tactic predictor like CoqTactician / CoqGym. Use
-  this to generate many more proof states.
+* Execute a random tactic from a human-written proof state. The tactic
+  should not be chosen uniformly random: 
+  1. it should not result in an error,
+  2. it should result in a provable goal; this can be check with CoqHammer or
+  `sauto use: lem1, lem2, lem3...`,
+  3. maybe it should come from a tactic predictor like
+  CoqTactician / CoqGym. 
+  
+  Use this to generate many more proof states.
 
 * Tweak the context by adding random lemmas / removing random
-  premises. Maybe not fully random; could use premise selection to
-  insert a likely lemma.
-* Similarly to the inequality generator from OpenAI: try to generate
+  premises. Again, the lemmas need not be uniformly random; here we
+  could use premise selection to insert a likely lemma.
+
+* Inspired by the inequality generator from OpenAI: try to generate
   algebraic identities or logical tautologies? But forbid the trained
   model from using 'firstorder / tauto / (e)auto / lia / lra / ring /
   field' tactics ?
@@ -694,6 +699,15 @@ degree.
 semester including thesis writing. I would like the end result to be
 good enough to have a decent chance at a PhD student position at SU or
 KTH. I don't want the thesis to spill over summer 2023.
+
+**What is the time frame?** Currently do as much as possible from my
+TODO list below, discuss with future supervisor and examiner, and
+produce a formal proposal by December 15. The formal proposal should
+have a real time line. At the moment, I think experiments, coding and
+more literature reading in January and February, model training in March,
+thesis writing, presentation preparation in April and March,
+presentation, opposition responding to draft comments in May, fully
+finished in July.
 
   
 ## TODOs
