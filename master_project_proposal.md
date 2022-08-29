@@ -34,7 +34,7 @@ That could be trying novel ML techniques for generating proof terms or
 tactics, or adapting existing ML systems to work in more contexts.
 
 
-* **Table of contents**
+## Table of contents
 
 * Placeholder for Table of Content (Must not be removed)
 {:toc}
