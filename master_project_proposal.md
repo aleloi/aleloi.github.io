@@ -252,7 +252,7 @@ Below is another example. This is Figure 1 of [[CoqGym]](#coqgym).
 The Friendship theorem states that in a party of n persons, if every
 pair of persons has exactly one common friend, then there is someone
 in the party who is everyone else's friend
-[[Friendship72]](#friendship72). Friendship is assumed to be
+[[Friendship72]](#Friendship72). Friendship is assumed to be
 irreflexive (no one is a friend of themselves) and symmetric (if `x`
 is friends with `y`, then `y` is friends with `x`). `n` has to be
 finite and nonzero. I formulated and proved this theorem in Coq
@@ -469,11 +469,11 @@ have not been able to evaluate it.
 that it doesn't work, but maybe it helps a little?
 
 ### Deep Learning for the case study Coq project
-I did not try CoqGym, which is described in [CoqGym](#CoqGym). Based
+I did not try CoqGym, which is described in the section [CoqGym](#coqgym). Based
 on the grammar of Ltac given in the article [[CoqGym]](#coqgym), I
 don't think it will work for the `SSReflect` proof language.
 
-I do not think Proverbot9001 will work right away either, because as I
+I do not think [Proverbot9001](#proverbot9001) will work right away either, because as I
 understand it is tailor-made for one particular project.
 
 ## Deep Learning based proof automation
@@ -522,7 +522,7 @@ code to vectors with TreeLSTM in
 [[aleloi/ast-classification]](#ast-classification).
 
 ### Proverbot9001
-[[Proverbot]](Proverbot) is another deep learning-based system for Coq
+[[Proverbot]](#proverbot) is another deep learning-based system for Coq
 proof search. I have not read the linked article. Figure 9 of the article
 (copied below) shows a comparison with CoqHammer and CoqGym. Evaluated
 on one particular project, Proverbot performs significantly better
