@@ -729,7 +729,7 @@ finished in July.
 * Finish reading the GPT-f and OpenAI Lean paper.
 * Install and try running some of the DL projects.
 * CoqGym was very cheap to train (5 days on a several years old
-  consumer GPU); maybe try re-training / at least look at the code?
+  consumer GPU); maybe try re-training / at least look at the code? It would probably require a day fiddling with obsolete Tensorflow versions 😞.
 * Merge [[AutomationBranch]](https://github.com/aleloi/coq-friendship-theorem/blob/more_automation/theories/adj2_matrix.v#L25-L32); make a released version; ask to publish to the package list.
 * ~~Write an email about my [pull
   request](https://github.com/coq-community/coq-100-theorems/pull/33)
