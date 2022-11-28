@@ -9,13 +9,13 @@ Date: August 2022
 
 ## Master thesis project proposal
 This document contains possible master
-project ideas for a master project to be done by me  during
+project ideas for a master project to be done by me during
 period 1 and 2 of 2023. I am a second year masters student in [Machine Learning](https://www.kth.se/en/studies/master/machine-learning/msc-machine-learning-1.48533) at KTH. The target audience is potential supervisors and examiners, people that may direct me to potential supervisors, or people that may suggest ideas to try and papers to read.
 
 The document contains 
 * an [introduction](#introduction-to-formal-verification) to the topic;
 * a [case study](#case-study-friendship-theorem-and-automation) of proof
-automation systems available for a real formalization project that I've done during this summer;
+automation systems available for a real formalization project that I've done during the summer of 2022;
 * an incomplete survey of existing ML-based proof automation methods for Coq;
 * a list of possible [Master project ideas](#master-project-ideas); hopefully 
   feasible given the time frame, my prior knowledge and computation
@@ -89,7 +89,7 @@ Even though many logical statements have been formalized, developing
 formal proofs is time consuming and tedious [[[Czajka18]](#czajka18),
 page 2, introduction]. In my experience, it takes between weeks to
 months to learn Coq to basic proficiency, given sufficient
-mathematical literacy. Since at least the days of Hilbert and Gödel,
+mathematical literacy. **TODO: what's up with this sentence?** Since at least the days of Hilbert and Gödel,
 mathematicians have thought and researched whether proofs can be
 constructed by algorithm.
 
@@ -117,7 +117,7 @@ thus all mathematics can be formalized. [[ZFCInHOL]](#zfcinhol)
 describes a formalization of ZFC in HOL, which makes it powerful
 enough to encode all standard mathematics as well.
 
-My only valid argument for Coq is my familiarity with it.  I learned
+My only remaining valid argument for Coq is my familiarity with it.  I learned
 Coq in type theory class under late Erik Palmgren, have used it in
 several projects since then, and  I don't have significant
 experience working with any other proof assistant. I also have the
@@ -184,7 +184,7 @@ theorems than Coq.
 <!--       can encode ZFC with infinitely many inaccessible ordinals. -->
 
 ### Coq example
-The example below shows a proof of $$(\exists (a\in A): \neg B(a)) \Rightarrow \neg (\forall (a\in A): B(a))$$ in the Coq system.
+The example below shows 4 proofs  of the logical formula $$(\exists (a\in A): \neg B(a)) \Rightarrow \neg (\forall (a\in A): B(a))$$ in the Coq system. The paragraphs after the proofs comment on them in detail.
 
 ```coq
 Lemma exists_impl_forall (A: Type) (B: A -> Prop) :
@@ -193,7 +193,7 @@ Proof.
   (* first proof; full proof term *)
   exact (fun anBa allB => let (a, nBa) := anBa in nBa (allB a)).
   
-  (* second proof; automated *)
+  (* second proof; fully automated *)
   Restart.
   firstorder.
 
@@ -226,8 +226,7 @@ language.
 The example above shows 4 ways to prove the implication with $$\exists$$
 and $$\forall$$. The first constructs the full proof term `fun anBa allB
 => let (a, nBa) := anBa in nBa (allB a)`. The second instructs Coq to
-automatically construct the proof term with `firstorder` that only
-works for some proofs. The third example shows the commands of the
+automatically construct the proof term with `firstorder`. The tactic `firstorder` is only able to find proofs in some scenarios. The third example shows the commands of the
 *tactic language*.  The fourth is a mix between constructing proof
 terms and using proof tactics.
 
@@ -259,7 +258,7 @@ in the party who is everyone else's friend
 irreflexive (no one is a friend of themselves) and symmetric (if `x`
 is friends with `y`, then `y` is friends with `x`). `n` has to be
 finite and nonzero. I formulated and proved this theorem in Coq
-[[smallish Coq project]](#friendship). The Coq formulation is:
+[[smallish Coq project]](#friendship). This is theorem 83 in a list of ["top 100 mathematical theorems](http://www.cs.ru.nl/~freek/100/). The Coq formulation is:
 
 ```coq
 Theorem Friendship
@@ -271,7 +270,7 @@ Theorem Friendship
 
 I formalized the proof given in [[BookProof]](#FriendshipBook) which is
 claimed to be identical to the first published proof by Erdös et. al.
-[[ErdosProof]](#ErdosProof). The proof goes as follows:
+[[ErdosProof]](#ErdosProof). My proof goes as follows (I had to do much of the linear algebra differently, because the linear algebra library did not have some facts about linear operator spectra):
 * Assume that there is *no* person that knows all others. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#no_hub':56)
 * Under the assumption, the friendship graph is
   *k*-regular. [[link]](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#regular)
@@ -285,7 +284,7 @@ A good example of a non-automated proof is [`Lemma
 k_not_2`](https://aleloi.github.io/coq-friendship-theorem/coqdoc/Friendship.combinatorics.html#k_not_2),
 which shows the level of detail required for a basic combinatorial
 proof. The lemma states that whenever the friendship graph contains no
-person is a friend of all others, and and is $$k$$-regular with
+person is a friend of all others, and is $$k$$-regular with
 $$n=k^2-k+1$$, then $$k\neq 2$$. A human written proof would be to assume
 $$k=2$$ for contradiction, compute $$n=2^2-2+1=3$$, take any person and
 observe that the person together with its two friends form the full
@@ -311,7 +310,7 @@ writing Coq proofs. [[Czajka18]](#czajka18) argues the case for more automation:
 > number of simple known lemmas.
 
 #### Autorewrite
-Automatic rewriting has been implemented in Coq since at least 1999 [[CoqEarlyHistory]](https://coq.inria.fr/refman/history.html#version-6-3). Do demonstrate how it works, 
+Automatic rewriting has been implemented in Coq since at least 1999 [[CoqEarlyHistory]](https://coq.inria.fr/refman/history.html#version-6-3). To demonstrate how it works, 
 suppose we want e.g. `-(-x)` to automatically simplify to `x` for integers `x`. One can define a *rewrite hint database* of previously proven equalities. The Coq syntax is
 
 ```coq
@@ -359,9 +358,9 @@ mechanism does not work with `autorewrite`. [Note I don't fully
 understand this].
 
 #### CoqHammer
-[[Czajka18]](#czajka18) is a general purpose automation tool. It works
-by first scanning though all premises (that can be named entities like
-definitions or lemmas) in the environment, and filters out the top
+CoqHammer is a general purpose automation tool [[Czajka18]](#czajka18). It works
+by first scanning though all premises (all named entities including both
+definitions and lemmas) in the environment, and filters out the top
 $$N=1024$$ that it deems most likely to be used in the proof of the
 current goal. The filtering can be done with a Naive Bayes relevance
 filter. I don't know what the features for Naive Bayes nor what
@@ -381,9 +380,9 @@ The TPTP output is then sent to external provers like
 [[Eprover]](#eprover).
 
 I tried to use CoqHammer for the Friendship Theorem project, but found
-that for some reason, it could not solve even simple goals. Below is
-an example. I am to prove that $$\det(-I)$$ is an invertible ring
-element in the ring of complex algebraic numbers. I already know that
+that it could not solve even simple goals in `mathcomp`. Below is
+an example. I am to prove that $$\det(-I)$$ where I is the identity matrix is an invertible ring
+element in the ring of complex algebraic numbers. I have a premise `neg1M_unit` in scope that says that
 $$-I$$ is an invertible matrix, and there is a lemma `unitmxE` that says
 that invertible matrices have invertible determinants. The prediction
 step finds the lemma `unitmxE` among the top 50 candidates. Then
@@ -417,7 +416,7 @@ situation where nothing can be proven.
 
 Since then I also tried CoqHammer on the simpler goal `Lemma com_addC
 (a b: algC): a+b=b+a.`, and it also didn't work. I think that the
-reason for failure was that that the TPTP output lacked axioms that
+reason for failure was that that the TPTP output lacked premises that
 identify `Algebraics.Implementation.zmodType` with `algC =
 Algebraics.Implementation.Type`. I filed an
 [issue](https://github.com/lukaszcz/coqhammer/issues/145) in
@@ -448,8 +447,9 @@ perform as well for `mathcomp/SSRewrite` as for the standard library because of 
 > for tactic composition (tac1; tac2) and tactic dispatching (tac1;
 > [tac2 | tac3]).
 
+
 In `mathcomp/SSRewrite` it is very common with tactics with many arguments. E.g.
-this representative proof snippet from somewhere in [`algebra/poly.v`](https://github.com/math-comp/math-comp/blob/master/mathcomp/algebra/poly.v):
+see this representative proof snippet from somewhere in [`algebra/poly.v`](https://github.com/math-comp/math-comp/blob/master/mathcomp/algebra/poly.v):
 ```coq
 move=> reg_d lt_r_d; rewrite addrC addr_eq0.
 have [-> | nz_q] := eqVneq q 0; first by rewrite mul0r oppr0.
@@ -461,7 +461,7 @@ If Tactician would use the methodology they use for `Ltac1`, both
 `apply: contraTF lt_r_d => /eqP->` and `rewrite size_proper_mul
 ?mulIr_eq0 ?lead_coef_eq0 //` would count as a single tactic. The
 first may be relatively general, but the second one is practically
-only applicable in only one case.
+only applicable in this one case.
 
 Currently, tactician doesn't support SSReflect / mathcomp, because
 SSReflect uses a different tactic language from `Ltac1`. Therefore I
@@ -511,11 +511,12 @@ Using a grammar-based tactic generation module allows the CoqGym to
 try tactics that are not present in the training data. This is
 different from e.g. CoqTactician.
 
-From experiment result tables in I draw the conclusion that CoqGym is
-overall weaker than CoqTactician. This is based on relative
-performances compared to CoqHammer, but it is difficult to say for
-sure, because CoqGym evaluates on all Coq proofs they could find while
-CoqTactician only evaluates on the standard library.
+From experiment result tables in the CoqGym and CoqTactician articles,
+I draw the conclusion that CoqGym is overall weaker than
+CoqTactician. This is based on relative performances compared to
+CoqHammer, but it is difficult to say for sure, because CoqGym
+evaluates on all Coq proofs they could find while CoqTactician only
+evaluates on the standard library.
 
 TODO: write a bit more on how they train (like, what is the loss?),
 and on what data-set.
@@ -534,7 +535,7 @@ than CoqGym.
 <img src="proverbot.png" alt="Staples are higher!" width="500"/>
 
 ### OpenAI papers
-This year, OpenAI published [Solving (Some) Formal Math Olympiad
+In 2022 OpenAI published [Solving (Some) Formal Math Olympiad
 Problems](https://openai.com/blog/formal-math/).  It is extremely
 impressive. Prior work struggles with short proofs that contain just a
 a few steps, while the OpenAI system generates proofs that are tens of
@@ -584,7 +585,7 @@ impactful project by **converting proof-of-concept research systems into
 usable proof automation tools**. 
 
 After reading a few articles, I have the following impressions:
-1. All available open source Coq code is barely enough for small DL
+1. All available open source Coq code is barely enough for small-scale DL
    methods and nowhere close to the data requirements of large textual
    models. TODO: here I could link to the "scaling law" paper and say
    something about where we are on the scaling curve. 
@@ -619,7 +620,7 @@ A list of more concrete ideas:
   are ways to make it work. Doing `from mathcomp Require Import
   all_ssreflect` brings something like 20000 entities in scope. I
   imagine a DL system that encodes all of them to fixed length vectors
-  during training. During proof development, I imagine the system
+  during setup. During proof development, I imagine the system
   encode the context and goal into a vector of the same length, and
   then pick premises based on a vector similarity score. I expect that
   to scale well with the number of lemmas, and think that it could
@@ -730,9 +731,9 @@ finished in July.
 * CoqGym was very cheap to train (5 days on a several years old
   consumer GPU); maybe try re-training / at least look at the code?
 * Merge [[AutomationBranch]](https://github.com/aleloi/coq-friendship-theorem/blob/more_automation/theories/adj2_matrix.v#L25-L32); make a released version; ask to publish to the package list.
-* Write an email about my [pull
+* ~~Write an email about my [pull
   request](https://github.com/coq-community/coq-100-theorems/pull/33)
-  to 100 formalized theorems.
+  to 100 formalized theorems.~~ It got merged!
 * Make a pull request to mathcomp with my 3-4 matrix lemmas.
 
 ## References
